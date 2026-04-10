@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Luigi Pichardi – Reparación de Lavadoras</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --white: #ffffff;
+      --off-white: #f7f7f5;
+      --light: #eef0ed;
+      --accent: #2563eb;
+      --accent2: #06b6d4;
+      --dark: #111827;
+      --mid: #4b5563;
+      --soft: #d1d5db;
+      --radius: 18px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: linear-gradient(160deg, #e8f0fe 0%, #f0f8ff 30%, #ffffff 60%, #eef4fb 100%);
+      background-attachment: fixed;
+      color: var(--dark);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 48px;
+      background: rgba(255,255,255,0.88);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      transition: box-shadow .3s;
+    }
+    nav.scrolled { box-shadow: 0 4px 30px rgba(0,0,0,0.07); }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem; font-weight: 900; letter-spacing: -.5px;
+      color: var(--dark);
+    }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a {
+      text-decoration: none; font-size: .9rem; font-weight: 500; color: var(--mid);
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-cta {
+      background: var(--accent); color: #fff; border: none; border-radius: 50px;
+      padding: 10px 24px; font-size: .9rem; font-weight: 600; cursor: pointer;
+      text-decoration: none;
+      transition: background .2s, transform .15s;
+    }
+    .nav-cta:hover { background: #1d4ed8; transform: translateY(-1px); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 120px 48px 80px;
+      position: relative; overflow: hidden;
+      background: url('https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?w=1600&q=85') center center / cover no-repeat fixed;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(100deg, rgba(255,255,255,0.78) 0%, rgba(232,240,254,0.60) 45%, rgba(200,220,255,0.25) 100%);
+      z-index: 1;
+    }
+    .hero::after { display: none; }
+    .hero-text { position: relative; z-index: 2; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(37,99,235,0.08); color: var(--accent);
+      border-radius: 50px; padding: 6px 16px; font-size: .8rem; font-weight: 600;
+      letter-spacing: .5px; text-transform: uppercase;
+      margin-bottom: 28px;
+      animation: fadeUp .6s ease both;
+    }
+    .hero-badge::before {
+      content: ''; width: 8px; height: 8px; border-radius: 50%;
+      background: var(--accent); animation: pulse 1.8s infinite;
+    }
+    @keyframes pulse {
+      0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.3)}
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 5vw, 4.2rem); font-weight: 900;
+      line-height: 1.1; letter-spacing: -1.5px;
+      margin-bottom: 22px;
+      animation: fadeUp .7s .1s ease both;
+    }
+    .hero h1 em { font-style: italic; color: var(--accent); }
+    .hero-sub {
+      font-size: 1.1rem; color: var(--mid); line-height: 1.7; max-width: 480px;
+      margin-bottom: 38px;
+      animation: fadeUp .7s .2s ease both;
+    }
+    .hero-btns {
+      display: flex; gap: 14px; flex-wrap: wrap;
+      animation: fadeUp .7s .3s ease both;
+    }
+    .btn-primary {
+      background: var(--accent); color: #fff;
+      padding: 14px 32px; border-radius: 50px; font-size: 1rem; font-weight: 600;
+      text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+      transition: background .2s, transform .15s, box-shadow .2s;
+      box-shadow: 0 6px 24px rgba(37,99,235,0.25);
+    }
+    .btn-primary:hover { background: #1d4ed8; transform: translateY(-2px); box-shadow: 0 10px 32px rgba(37,99,235,0.35); }
+    .btn-outline {
+      background: transparent; color: var(--dark);
+      padding: 14px 32px; border-radius: 50px; font-size: 1rem; font-weight: 600;
+      text-decoration: none; border: 2px solid var(--soft);
+      display: inline-flex; align-items: center; gap: 8px;
+      transition: border-color .2s, transform .15s;
+    }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+    /* hero stats */
+    .hero-stats {
+      display: flex; gap: 32px; margin-top: 48px;
+      animation: fadeUp .7s .4s ease both;
+    }
+    .stat h3 { font-size: 2rem; font-weight: 700; font-family: 'Playfair Display', serif; color: var(--accent); }
+    .stat p { font-size: .82rem; color: var(--mid); margin-top: 2px; }
+
+    /* hero visual — hidden since BG is the hero image */
+    .hero-visual { display: none; }
+    .hero-slider {
+      width: 100%; max-width: 520px; aspect-ratio: 4/3;
+      border-radius: var(--radius); overflow: hidden;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.12);
+      position: relative;
+    }
+    .hero-slider img {
+      position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+      transition: opacity .8s ease, transform 1.2s ease;
+      opacity: 0;
+    }
+    .hero-slider img.active { opacity: 1; transform: scale(1.03); }
+    .slider-dots {
+      position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 8px; z-index: 5;
+    }
+    .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: rgba(255,255,255,0.5); cursor: pointer; transition: background .3s, width .3s;
+    }
+    .dot.active { background: #fff; width: 22px; border-radius: 4px; }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+
+    /* ── SERVICES ── */
+    .section { padding: 100px 48px; }
+    .section-label {
+      font-size: .78rem; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif; font-size: clamp(2rem, 3.5vw, 2.8rem);
+      font-weight: 900; line-height: 1.15; letter-spacing: -1px;
+      max-width: 520px; margin-bottom: 56px;
+    }
+    .section-title em { font-style: italic; color: var(--accent); }
+
+    .services-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: 24px;
+    }
+    .service-card {
+      background: rgba(255,255,255,0.75); backdrop-filter: blur(8px); border-radius: var(--radius);
+      padding: 36px 30px;
+      border: 1.5px solid transparent;
+      transition: border-color .25s, transform .25s, box-shadow .25s;
+      cursor: default;
+    }
+    .service-card:hover {
+      border-color: var(--accent); transform: translateY(-6px);
+      box-shadow: 0 20px 50px rgba(37,99,235,0.1);
+    }
+    .service-icon {
+      width: 54px; height: 54px; border-radius: 14px;
+      background: var(--accent); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; margin-bottom: 20px;
+    }
+    .service-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; }
+    .service-card p { font-size: .9rem; color: var(--mid); line-height: 1.6; }
+
+    /* ── WHY US ── */
+    .why-section {
+      background: var(--dark); color: #fff;
+      padding: 100px 48px;
+      position: relative; overflow: hidden;
+    }
+    .why-section::before {
+      content: '';
+      position: absolute; top: -200px; right: -200px;
+      width: 600px; height: 600px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(37,99,235,0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .why-section .section-title { color: #fff; max-width: 100%; }
+    .why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 32px; margin-top: 56px; }
+    .why-item { }
+    .why-item .num {
+      font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 900;
+      color: var(--accent); line-height: 1; margin-bottom: 8px;
+    }
+    .why-item h4 { font-size: 1rem; font-weight: 600; color: #fff; margin-bottom: 8px; }
+    .why-item p { font-size: .88rem; color: rgba(255,255,255,0.55); line-height: 1.6; }
+
+    /* ── GALLERY / VIDEO ── */
+    .gallery-section { padding: 100px 48px; background: transparent; }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: 260px 260px;
+      gap: 16px; margin-top: 56px;
+    }
+    .gallery-item {
+      border-radius: 14px; overflow: hidden; position: relative; cursor: pointer;
+      background: var(--light);
+    }
+    .gallery-item:first-child { grid-row: span 2; }
+    .gallery-item img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform .5s ease;
+    }
+    .gallery-item:hover img { transform: scale(1.06); }
+    .gallery-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.45), transparent);
+      opacity: 0; transition: opacity .3s;
+      display: flex; align-items: flex-end; padding: 20px;
+    }
+    .gallery-item:hover .gallery-overlay { opacity: 1; }
+    .gallery-overlay span { color: #fff; font-size: .85rem; font-weight: 600; }
+
+    /* video embed placeholder */
+    .video-wrap {
+      margin-top: 56px; border-radius: var(--radius); overflow: hidden;
+      position: relative; aspect-ratio: 16/9;
+      background: var(--dark);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+    }
+    .video-wrap iframe {
+      width: 100%; height: 100%; border: none;
+      position: absolute; inset: 0;
+    }
+    .video-placeholder {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%);
+      color: #fff; gap: 16px; cursor: pointer;
+    }
+    .play-btn {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: var(--accent); display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem;
+      box-shadow: 0 0 0 16px rgba(37,99,235,0.15);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .play-btn:hover { transform: scale(1.1); box-shadow: 0 0 0 22px rgba(37,99,235,0.12); }
+    .video-placeholder p { font-size: 1rem; opacity: .7; }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials { padding: 100px 48px; }
+    .testi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 24px; margin-top: 56px; }
+    .testi-card {
+      background: rgba(255,255,255,0.75); backdrop-filter: blur(8px); border-radius: var(--radius); padding: 32px;
+      transition: transform .25s, box-shadow .25s;
+    }
+    .testi-card:hover { transform: translateY(-4px); box-shadow: 0 14px 40px rgba(0,0,0,0.07); }
+    .stars { color: #f59e0b; font-size: 1rem; letter-spacing: 2px; margin-bottom: 14px; }
+    .testi-card blockquote { font-size: .95rem; color: var(--mid); line-height: 1.7; margin-bottom: 20px; font-style: italic; }
+    .testi-author { display: flex; align-items: center; gap: 12px; }
+    .avatar {
+      width: 42px; height: 42px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-weight: 700; font-size: .9rem;
+    }
+    .testi-author div p:first-child { font-weight: 600; font-size: .9rem; }
+    .testi-author div p:last-child { font-size: .78rem; color: var(--soft); }
+
+    /* ── BRANDS ── */
+    .brands { padding: 60px 48px; border-top: 1px solid var(--light); border-bottom: 1px solid var(--light); }
+    .brands-label { text-align: center; font-size: .78rem; font-weight: 600; color: var(--soft); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 32px; }
+    .brands-row { display: flex; gap: 40px; flex-wrap: wrap; justify-content: center; align-items: center; }
+    .brand-badge {
+      font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700;
+      color: var(--soft); letter-spacing: 1px;
+      transition: color .2s;
+    }
+    .brand-badge:hover { color: var(--mid); }
+
+    /* ── CONTACT ── */
+    .contact-section { padding: 100px 48px; background: transparent; }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; margin-top: 56px; }
+    .contact-info h3 { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 900; margin-bottom: 16px; }
+    .contact-info p { color: var(--mid); line-height: 1.7; margin-bottom: 28px; }
+    .contact-item {
+      display: flex; align-items: center; gap: 18px;
+      margin-bottom: 20px;
+      background: rgba(255,255,255,0.7); backdrop-filter: blur(8px);
+      border-radius: 16px; padding: 16px 20px;
+      border: 1.5px solid rgba(37,99,235,0.08);
+      transition: border-color .25s, transform .2s, box-shadow .25s;
+    }
+    .contact-item:hover {
+      border-color: var(--accent); transform: translateX(4px);
+      box-shadow: 0 8px 28px rgba(37,99,235,0.1);
+    }
+    .contact-item-icon {
+      width: 52px; height: 52px; border-radius: 14px;
+      background: linear-gradient(135deg, var(--accent) 0%, #1d4ed8 100%);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 6px 18px rgba(37,99,235,0.3);
+    }
+    .contact-item-icon svg { width: 24px; height: 24px; fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .contact-item div p:first-child { font-size: .72rem; color: var(--accent); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; margin-bottom: 3px; }
+    .contact-item div p:last-child { font-weight: 600; font-size: .98rem; color: var(--dark); }
+
+    .contact-form { background: #fff; border-radius: var(--radius); padding: 40px; box-shadow: 0 8px 40px rgba(0,0,0,0.06); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { margin-bottom: 18px; }
+    .form-group label { display: block; font-size: .8rem; font-weight: 600; color: var(--mid); margin-bottom: 6px; text-transform: uppercase; letter-spacing: .5px; }
+    .form-group input, .form-group textarea, .form-group select {
+      width: 100%; padding: 13px 16px; border-radius: 10px;
+      border: 1.5px solid var(--light); font-family: inherit; font-size: .9rem;
+      background: var(--off-white); color: var(--dark);
+      transition: border-color .2s;
+      outline: none;
+    }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--accent); background: #fff; }
+    .form-group textarea { resize: vertical; min-height: 110px; }
+    .form-submit {
+      width: 100%; padding: 15px; border-radius: 50px;
+      background: var(--accent); color: #fff; border: none;
+      font-size: 1rem; font-weight: 700; cursor: pointer;
+      transition: background .2s, transform .15s;
+    }
+    .form-submit:hover { background: #1d4ed8; transform: translateY(-1px); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--dark); color: rgba(255,255,255,0.6);
+      padding: 60px 48px 32px;
+    }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+    .footer-brand .nav-logo { font-size: 1.4rem; color: #fff; }
+    .footer-brand p { font-size: .88rem; line-height: 1.7; margin-top: 14px; max-width: 260px; }
+    .footer-col h4 { font-size: .85rem; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-col ul li a { color: rgba(255,255,255,0.5); text-decoration: none; font-size: .88rem; transition: color .2s; }
+    .footer-col ul li a:hover { color: #fff; }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 28px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; font-size: .8rem; }
+    .footer-bottom a { color: var(--accent); text-decoration: none; }
+
+    /* social */
+    .social-row { display: flex; gap: 12px; margin-top: 20px; }
+    .social-btn {
+      width: 38px; height: 38px; border-radius: 10px;
+      background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.6);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; text-decoration: none;
+      transition: background .2s, color .2s;
+    }
+    .social-btn:hover { background: var(--accent); color: #fff; }
+
+    /* floating whatsapp */
+    .wa-float {
+      position: fixed; bottom: 28px; right: 28px; z-index: 200;
+      width: 58px; height: 58px; border-radius: 50%;
+      background: #25d366; color: #fff;
+      display: flex; align-items: center; justify-content: center; font-size: 1.6rem;
+      text-decoration: none;
+      box-shadow: 0 6px 28px rgba(37,211,102,0.45);
+      animation: waBounce 2s infinite;
+    }
+    @keyframes waBounce {
+      0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)}
+    }
+
+    /* scroll reveal */
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity .65s ease, transform .65s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* responsive */
+    @media(max-width: 900px){
+      nav { padding: 16px 24px; }
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; padding: 100px 24px 60px; gap: 40px; }
+      .hero-visual { order: -1; }
+      .section, .why-section, .gallery-section, .testimonials, .contact-section, .brands { padding: 70px 24px; }
+      .gallery-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+      .gallery-item:first-child { grid-row: auto; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media(max-width: 600px){
+      .hero h1 { font-size: 2.4rem; }
+      .gallery-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .hero-stats { flex-wrap: wrap; gap: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-logo">Luigi<span>Pichardi</span></div>
+  <ul class="nav-links">
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#galeria">Trabajos</a></li>
+    <li><a href="#testimonios">Reseñas</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+  <a href="https://wa.link/rq2ud5" target="_blank" class="nav-cta">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:middle;margin-right:6px"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+    WhatsApp
+  </a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="inicio">
+  <div class="hero-text">
+    <div class="hero-badge">✦ Servicio Técnico Profesional</div>
+    <h1>Expertos en<br><em>Lavadoras</em><br>& Electrodomésticos</h1>
+    <p class="hero-sub">Reparación, mantenimiento e instalación de lavadoras a domicilio en Lima. Atendemos todas las marcas con repuestos originales y garantía en cada servicio.</p>
+    <div class="hero-btns">
+      <a href="https://wa.link/rq2ud5" target="_blank" class="btn-primary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+        Solicitar Servicio
+      </a>
+      <a href="#servicios" class="btn-outline">Ver Servicios →</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><h3>11.8K</h3><p>Likes en TikTok</p></div>
+      <div class="stat"><h3>2.4K</h3><p>Seguidores</p></div>
+      <div class="stat"><h3>100%</h3><p>Satisfacción</p></div>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="hero-slider" id="heroSlider">
+      <img src="https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?w=800&q=80" alt="Lavadora moderna" class="active"/>
+      <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80" alt="Reparación"/>
+      <img src="https://images.unsplash.com/photo-1567502951/unsplash.jpg" alt="Técnico"/>
+      <img src="https://images.unsplash.com/photo-1604335399105-a0c585fd81a1?w=800&q=80" alt="Electrodoméstico"/>
+      <div class="slider-dots" id="sliderDots"></div>
+    </div>
+  </div>
+</section>
+
+<!-- BRANDS -->
+<section class="brands reveal">
+  <p class="brands-label">Marcas que reparamos</p>
+  <div class="brands-row">
+    <span class="brand-badge">Samsung</span>
+    <span class="brand-badge">LG</span>
+    <span class="brand-badge">Whirlpool</span>
+    <span class="brand-badge">Mabe</span>
+    <span class="brand-badge">Bosch</span>
+    <span class="brand-badge">Electrolux</span>
+    <span class="brand-badge">Daewoo</span>
+    <span class="brand-badge">Haceb</span>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="section" id="servicios">
+  <p class="section-label reveal">Lo que hacemos</p>
+  <h2 class="section-title reveal">Servicios<br><em>especializados</em><br>para tu hogar</h2>
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <div class="service-icon">🔧</div>
+      <h3>Reparación de Lavadoras</h3>
+      <p>Diagnóstico y reparación completa de lavadoras cargadoras frontales y superiores de todas las marcas del mercado.</p>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon">🛠️</div>
+      <h3>Mantenimiento Preventivo</h3>
+      <p>Limpieza interna, revisión de componentes y ajustes para alargar la vida útil de tu electrodoméstico.</p>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon">⚡</div>
+      <h3>Instalación a Domicilio</h3>
+      <p>Instalamos tu lavadora nueva con todas las conexiones necesarias, asegurando su correcto funcionamiento.</p>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon">🔩</div>
+      <h3>Venta de Repuestos</h3>
+      <p>Contamos con stock de repuestos originales y alternativos para las principales marcas del mercado peruano.</p>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon">🚚</div>
+      <h3>Servicio a Domicilio</h3>
+      <p>Atendemos en Anita, Chorrillos, Surco, San Miguel, SJM y más distritos de Lima Metropolitana.</p>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon">🏅</div>
+      <h3>Garantía en Reparaciones</h3>
+      <p>Todos nuestros servicios cuentan con garantía. Tu satisfacción y la durabilidad del trabajo son nuestra prioridad.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section class="why-section" id="nosotros">
+  <p class="section-label" style="color:rgba(255,255,255,0.5)">¿Por qué elegirnos?</p>
+  <h2 class="section-title">La diferencia está<br>en los <em>detalles</em></h2>
+  <div class="why-grid">
+    <div class="why-item reveal">
+      <div class="num">01</div>
+      <h4>Técnico Certificado</h4>
+      <p>Luigi Pichardi cuenta con años de experiencia y capacitación continua en las últimas tecnologías.</p>
+    </div>
+    <div class="why-item reveal">
+      <div class="num">02</div>
+      <h4>Atención el mismo día</h4>
+      <p>Coordinamos tu cita y en la mayoría de casos asistimos el mismo día para solucionar tu problema.</p>
+    </div>
+    <div class="why-item reveal">
+      <div class="num">03</div>
+      <h4>Precio justo y transparente</h4>
+      <p>Presupuesto sin costo previo. Sin cobros ocultos. Solo pagas si aceptas el diagnóstico.</p>
+    </div>
+    <div class="why-item reveal">
+      <div class="num">04</div>
+      <h4>Más de 11 mil fans en TikTok</h4>
+      <p>Nuestros videos de reparación hablan por nosotros. Transparencia total en cada trabajo realizado.</p>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery-section" id="galeria">
+  <p class="section-label reveal">Nuestros trabajos</p>
+  <h2 class="section-title reveal">Resultados que<br><em>hablan</em> por sí solos</h2>
+  <div class="gallery-grid">
+    <div class="gallery-item reveal">
+      <img src="https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?w=600&q=80" alt="Reparación lavadora"/>
+      <div class="gallery-overlay"><span>Reparación completa</span></div>
+    </div>
+    <div class="gallery-item reveal">
+      <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80" alt="Instalación"/>
+      <div class="gallery-overlay"><span>Instalación domicilio</span></div>
+    </div>
+    <div class="gallery-item reveal">
+      <img src="https://images.unsplash.com/photo-1604335399105-a0c585fd81a1?w=600&q=80" alt="Mantenimiento"/>
+      <div class="gallery-overlay"><span>Mantenimiento</span></div>
+    </div>
+    <div class="gallery-item reveal">
+      <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=600&q=80" alt="Técnico"/>
+      <div class="gallery-overlay"><span>Servicio técnico</span></div>
+    </div>
+    <div class="gallery-item reveal">
+      <img src="https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=600&q=80" alt="Repuestos"/>
+      <div class="gallery-overlay"><span>Venta de repuestos</span></div>
+    </div>
+  </div>
+
+  <!-- TikTok Video Section -->
+  <div style="margin-top:56px;margin-left:-48px;margin-right:-48px;padding:0 48px;">
+    <p class="section-label reveal" style="padding-left:0">📱 Síguenos en TikTok</p>
+    <h3 style="font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;margin-bottom:32px;" class="reveal">
+      Mira cómo trabajamos<br><em style="color:var(--accent)">@luigipichardi</em>
+    </h3>
+    <div class="reveal" style="width:100%;border-radius:var(--radius);overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.1);background:#fff;">
+      <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@luigipichardi"
+        data-unique-id="luigipichardi" data-embed-type="creator"
+        style="max-width:100% !important;min-width:100% !important;width:100% !important;min-height:700px;margin:0 !important;">
+        <section>
+          <a target="_blank" href="https://www.tiktok.com/@luigipichardi?refer=creator_embed">@luigipichardi</a>
+        </section>
+      </blockquote>
+      <script async src="https://www.tiktok.com/embed.js"></script>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials" id="testimonios">
+  <p class="section-label reveal">Lo que dicen nuestros clientes</p>
+  <h2 class="section-title reveal">Reseñas <em>reales</em><br>de Lima</h2>
+  <div class="testi-grid">
+    <div class="testi-card reveal">
+      <div class="stars">★★★★★</div>
+      <blockquote>"Luigi llegó el mismo día, diagnosticó el problema en minutos y lo reparó al instante. Precio muy justo y con garantía. Lo recomiendo totalmente."</blockquote>
+      <div class="testi-author">
+        <div class="avatar">MA</div>
+        <div>
+          <p>María A.</p>
+          <p>Surco, Lima</p>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card reveal">
+      <div class="stars">★★★★★</div>
+      <blockquote>"Excelente servicio. Mi lavadora Samsung hacía ruido y en una visita quedó perfecta. Muy profesional y puntual. Sin duda lo llamaré para el próximo mantenimiento."</blockquote>
+      <div class="testi-author">
+        <div class="avatar">JC</div>
+        <div>
+          <p>Jorge C.</p>
+          <p>San Miguel, Lima</p>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card reveal">
+      <div class="stars">★★★★★</div>
+      <blockquote>"Lo vi en TikTok y me animé a llamar. Súper honesto con el diagnóstico, no infla el costo. Me instaló la lavadora nueva rapidísimo. ¡100% recomendado!"</blockquote>
+      <div class="testi-author">
+        <div class="avatar">KR</div>
+        <div>
+          <p>Karla R.</p>
+          <p>Chorrillos, Lima</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contacto">
+  <p class="section-label reveal">Contáctanos</p>
+  <h2 class="section-title reveal">¿Tu lavadora<br>tiene problemas?<br><em>Escríbenos</em></h2>
+  <div class="contact-grid">
+    <div class="contact-info reveal">
+      <h3>Estamos listos para ayudarte</h3>
+      <p>Atendemos de lunes a sábado en toda Lima Metropolitana. Coordinamos tu cita por WhatsApp de forma rápida y sin complicaciones.</p>
+      <div class="contact-item">
+        <div class="contact-item-icon" style="background:#25d366;">
+          <svg viewBox="0 0 24 24" fill="white" width="26" height="26"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+        </div>
+        <div>
+          <p>WhatsApp</p>
+          <p>wa.link/rq2ud5</p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-item-icon" style="background:#000;">
+          <svg viewBox="0 0 24 24" fill="white" width="26" height="26"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.27 8.27 0 0 0 4.84 1.55V6.79a4.85 4.85 0 0 1-1.07-.1z"/></svg>
+        </div>
+        <div>
+          <p>TikTok</p>
+          <p>@luigipichardi</p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-item-icon" style="background:linear-gradient(135deg,#10b981,#059669)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <div>
+          <p>Zona de atención</p>
+          <p>Lima Metropolitana</p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-item-icon" style="background:linear-gradient(135deg,#f59e0b,#d97706)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div>
+          <p>Horario de atención</p>
+          <p>Lun – Sáb: 8:00am – 7:00pm</p>
+        </div>
+      </div>
+
+
+    </div>
+
+    <div class="contact-form reveal">
+      <h3 style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:900;margin-bottom:24px;">Envía tu consulta</h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nombre</label>
+          <input type="text" placeholder="Tu nombre"/>
+        </div>
+        <div class="form-group">
+          <label>Teléfono</label>
+          <input type="tel" placeholder="999 000 000"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Distrito</label>
+        <input type="text" placeholder="Ej: Surco, Miraflores..."/>
+      </div>
+      <div class="form-group">
+        <label>Marca de lavadora</label>
+        <select>
+          <option value="">Selecciona marca</option>
+          <option>Samsung</option>
+          <option>LG</option>
+          <option>Whirlpool</option>
+          <option>Mabe</option>
+          <option>Bosch</option>
+          <option>Electrolux</option>
+          <option>Otra</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Descripción del problema</label>
+        <textarea placeholder="Cuéntanos qué le pasa a tu lavadora..."></textarea>
+      </div>
+      <button class="form-submit" onclick="window.open('https://wa.link/rq2ud5','_blank')">
+        📲 Enviar por WhatsApp
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- MAPA COMPLETO ANCHO TOTAL -->
+<div style="width:100vw;position:relative;left:50%;right:50%;margin-left:-50vw;margin-right:-50vw;overflow:hidden;padding:0;">
+  <iframe
+    src="https://www.openstreetmap.org/export/embed.html?bbox=-77.178,-12.147,-76.908,-11.927&layer=mapnik&marker=-12.0464,-77.0428"
+    width="100%" height="700" style="border:none;display:block;width:100%;margin:0;padding:0;"
+    title="Lima Metropolitana">
+  </iframe>
+  <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(232,240,254,0.96),transparent);padding:20px 48px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+    <span style="font-weight:700;font-size:1rem;color:var(--dark);">📍 Atendemos en toda <strong>Lima Metropolitana</strong></span>
+    <a href="https://www.openstreetmap.org/?mlat=-12.0464&mlon=-77.0428#map=12/-12.0464/-77.0428" target="_blank" style="color:var(--accent);font-weight:700;text-decoration:none;background:#fff;padding:8px 20px;border-radius:50px;box-shadow:0 4px 14px rgba(0,0,0,0.12);">Ver mapa completo →</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="nav-logo">Luigi<span>Pichardi</span></div>
+      <p>Reparación, mantenimiento e instalación de lavadoras en Lima. Servicio técnico certificado con garantía.</p>
+      <div class="social-row">
+        <a href="https://wa.link/rq2ud5" target="_blank" class="social-btn">📱</a>
+        <a href="https://tiktok.com/@luigipichardi" target="_blank" class="social-btn">🎵</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Servicios</h4>
+      <ul>
+        <li><a href="#">Reparación</a></li>
+        <li><a href="#">Mantenimiento</a></li>
+        <li><a href="#">Instalación</a></li>
+        <li><a href="#">Repuestos</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Distritos</h4>
+      <ul>
+        <li><a href="#">Surco</a></li>
+        <li><a href="#">San Miguel</a></li>
+        <li><a href="#">Chorrillos</a></li>
+        <li><a href="#">SJM</a></li>
+        <li><a href="#">Miraflores</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Marcas</h4>
+      <ul>
+        <li><a href="#">Samsung</a></li>
+        <li><a href="#">LG</a></li>
+        <li><a href="#">Whirlpool</a></li>
+        <li><a href="#">Bosch</a></li>
+        <li><a href="#">Mabe</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Luigi Pichardi – Raven Electrical Repairs. Lima, Perú.</span>
+    <span>Diseñado con ♥ para tu negocio</span>
+  </div>
+</footer>
+
+<!-- CHATBOT FLOTANTE -->
+<style>
+  .chat-fab {
+    position: fixed; bottom: 28px; right: 28px; z-index: 1000;
+    width: 62px; height: 62px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), #1d4ed8);
+    border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 6px 28px rgba(37,99,235,0.45);
+    transition: transform .2s, box-shadow .2s;
+    animation: waBounce 2.5s infinite;
+  }
+  .chat-fab:hover { transform: scale(1.1); box-shadow: 0 10px 36px rgba(37,99,235,0.55); }
+  .chat-fab svg { width:32px;height:32px; }
+
+  .chat-window {
+    position: fixed; bottom: 104px; right: 28px; z-index: 999;
+    width: 340px; max-height: 520px;
+    background: #fff; border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+    display: flex; flex-direction: column;
+    overflow: hidden;
+    transform: scale(0.85) translateY(20px); opacity: 0;
+    pointer-events: none;
+    transition: transform .3s ease, opacity .3s ease;
+  }
+  .chat-window.open { transform: scale(1) translateY(0); opacity: 1; pointer-events: all; }
+
+  .chat-header {
+    background: linear-gradient(135deg, var(--accent), #1d4ed8);
+    padding: 16px 18px; display: flex; align-items: center; gap: 12px;
+  }
+  .chat-avatar {
+    width: 42px; height: 42px; border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem; flex-shrink: 0;
+  }
+  .chat-header-info h4 { color: #fff; font-size: .95rem; font-weight: 700; }
+  .chat-header-info p { color: rgba(255,255,255,0.75); font-size: .75rem; }
+  .chat-online { width:9px;height:9px;border-radius:50%;background:#4ade80;display:inline-block;margin-right:5px; }
+  .chat-close { margin-left:auto; background:none; border:none; color:#fff; font-size:1.3rem; cursor:pointer; line-height:1; opacity:.8; }
+  .chat-close:hover { opacity:1; }
+
+  .chat-messages {
+    flex:1; overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:10px;
+    background: #f7f8fc;
+    max-height: 300px;
+  }
+  .msg { max-width: 82%; padding: 10px 14px; border-radius: 16px; font-size: .88rem; line-height: 1.5; }
+  .msg.bot { background: #fff; color: var(--dark); border-bottom-left-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); align-self: flex-start; }
+  .msg.user { background: var(--accent); color: #fff; border-bottom-right-radius: 4px; align-self: flex-end; }
+  .msg-time { font-size: .68rem; opacity: .5; margin-top: 4px; }
+  .typing { display:flex; gap:4px; align-items:center; padding: 10px 14px; background:#fff; border-radius:16px; border-bottom-left-radius:4px; width:fit-content; box-shadow:0 2px 8px rgba(0,0,0,0.07); }
+  .typing span { width:7px;height:7px;border-radius:50%;background:#94a3b8; animation: typingDot 1.2s infinite; }
+  .typing span:nth-child(2){animation-delay:.2s} .typing span:nth-child(3){animation-delay:.4s}
+  @keyframes typingDot { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-6px)} }
+
+  .chat-options { padding: 10px 14px; display:flex; flex-wrap:wrap; gap:8px; background:#fff; border-top:1px solid #f0f0f0; }
+  .chat-opt-btn {
+    background: rgba(37,99,235,0.07); color: var(--accent); border: 1.5px solid rgba(37,99,235,0.2);
+    border-radius: 50px; padding: 7px 14px; font-size: .8rem; font-weight: 600;
+    cursor: pointer; transition: background .2s, transform .15s;
+    font-family: inherit;
+  }
+  .chat-opt-btn:hover { background: var(--accent); color: #fff; transform: translateY(-1px); }
+
+  .chat-input-row { display:flex; gap:8px; padding:12px 14px; background:#fff; border-top:1px solid #f0f0f0; }
+  .chat-input {
+    flex:1; border:1.5px solid #e5e7eb; border-radius:50px; padding:9px 14px;
+    font-size:.85rem; font-family:inherit; outline:none; transition:border-color .2s;
+  }
+  .chat-input:focus { border-color: var(--accent); }
+  .chat-send {
+    width:38px;height:38px;border-radius:50%;background:var(--accent);color:#fff;
+    border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;
+    transition:background .2s;flex-shrink:0;
+  }
+  .chat-send:hover { background:#1d4ed8; }
+</style>
+
+<!-- Bot button -->
+<button class="chat-fab" id="chatFab" onclick="toggleChat()" title="Chatear con nosotros">
+  <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Robot head -->
+    <rect x="14" y="18" width="36" height="28" rx="8" fill="white" opacity="0.95"/>
+    <!-- Eyes -->
+    <circle cx="24" cy="30" r="4" fill="#2563eb"/>
+    <circle cx="40" cy="30" r="4" fill="#2563eb"/>
+    <circle cx="25.5" cy="28.5" r="1.5" fill="white"/>
+    <circle cx="41.5" cy="28.5" r="1.5" fill="white"/>
+    <!-- Mouth -->
+    <path d="M24 38 Q32 43 40 38" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+    <!-- Antenna -->
+    <line x1="32" y1="18" x2="32" y2="12" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="32" cy="10" r="3" fill="white"/>
+    <!-- Ears -->
+    <rect x="10" y="26" width="4" height="10" rx="2" fill="white" opacity="0.8"/>
+    <rect x="50" y="26" width="4" height="10" rx="2" fill="white" opacity="0.8"/>
+  </svg>
+</button>
+
+<!-- Chat window -->
+<div class="chat-window" id="chatWindow">
+  <div class="chat-header">
+    <div class="chat-avatar">🤖</div>
+    <div class="chat-header-info">
+      <h4>Asistente Luigi Pichardi</h4>
+      <p><span class="chat-online"></span>En línea ahora</p>
+    </div>
+    <button class="chat-close" onclick="toggleChat()">✕</button>
+  </div>
+  <div class="chat-messages" id="chatMessages"></div>
+  <div class="chat-options" id="chatOptions"></div>
+  <div class="chat-input-row">
+    <input class="chat-input" id="chatInput" placeholder="Escribe tu mensaje..." onkeydown="if(event.key==='Enter')sendMsg()"/>
+    <button class="chat-send" onclick="sendMsg()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    </button>
+  </div>
+</div>
+
+<script>
+  // ── CHATBOT ──
+  let chatStep = 0;
+  let userData = {};
+  let chatOpen = false;
+
+  const flow = [
+    { bot: "¡Hola! 👋 Soy el asistente virtual de **Luigi Pichardi**. Estoy aquí para ayudarte con tu lavadora. ¿En qué te puedo ayudar?", options: ["🔧 Necesito una reparación","🛠️ Mantenimiento preventivo","⚡ Instalación de lavadora","🔩 Comprar un repuesto"] },
+    { bot: "Perfecto, con gusto te ayudamos. ¿Cuál es tu nombre?", options: [], field: "servicio" },
+    { bot: "Gracias {nombre} 😊 ¿Cuál es tu número de WhatsApp para que nuestro asesor te contacte?", options: [], field: "nombre" },
+    { bot: "Anotado. ¿En qué distrito de Lima estás ubicado?", options: [], field: "telefono" },
+    { bot: "¿Cuál es la marca de tu lavadora?", options: ["Samsung","LG","Whirlpool","Mabe","Bosch","Electrolux","Otra"], field: "distrito" },
+    { bot: "Casi listo. ¿Puedes describir brevemente el problema o qué necesitas?", options: [], field: "marca" },
+    { bot: "¡Muchas gracias por tu confianza, {nombre}! 🙌\n\nHemos registrado tu solicitud:\n📋 Servicio: {servicio}\n📍 Distrito: {distrito}\n🔧 Marca: {marca}\n\nUno de nuestros asesores se pondrá en contacto contigo muy pronto a través de WhatsApp. ¡Que tengas un excelente día! 😊", options: ["💬 Ir a WhatsApp ahora"], field: "descripcion", final: true }
+  ];
+
+  function toggleChat() {
+    chatOpen = !chatOpen;
+    document.getElementById('chatWindow').classList.toggle('open', chatOpen);
+    if (chatOpen && chatStep === 0) { startChat(); }
+  }
+
+  function startChat() {
+    setTimeout(() => addBotMsg(flow[0].bot, flow[0].options), 400);
+    chatStep = 1;
+  }
+
+  function addBotMsg(text, options = []) {
+    const msgs = document.getElementById('chatMessages');
+    // typing indicator
+    const typing = document.createElement('div');
+    typing.className = 'typing';
+    typing.innerHTML = '<span></span><span></span><span></span>';
+    msgs.appendChild(typing);
+    msgs.scrollTop = msgs.scrollHeight;
+
+    setTimeout(() => {
+      typing.remove();
+      const msg = document.createElement('div');
+      msg.className = 'msg bot';
+      let html = text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+      // replace placeholders
+      html = html.replace('{nombre}', userData.nombre||'');
+      html = html.replace('{servicio}', userData.servicio||'');
+      html = html.replace('{distrito}', userData.distrito||'');
+      html = html.replace('{marca}', userData.marca||'');
+      msg.innerHTML = html;
+      msgs.appendChild(msg);
+      msgs.scrollTop = msgs.scrollHeight;
+      setOptions(options);
+    }, 900);
+  }
+
+  function setOptions(options) {
+    const el = document.getElementById('chatOptions');
+    el.innerHTML = '';
+    options.forEach(o => {
+      const btn = document.createElement('button');
+      btn.className = 'chat-opt-btn';
+      btn.textContent = o;
+      btn.onclick = () => handleUserInput(o);
+      el.appendChild(btn);
+    });
+  }
+
+  function sendMsg() {
+    const input = document.getElementById('chatInput');
+    const val = input.value.trim();
+    if (!val) return;
+    input.value = '';
+    handleUserInput(val);
+  }
+
+  function handleUserInput(val) {
+    // show user bubble
+    const msgs = document.getElementById('chatMessages');
+    const msg = document.createElement('div');
+    msg.className = 'msg user';
+    msg.textContent = val;
+    msgs.appendChild(msg);
+    msgs.scrollTop = msgs.scrollHeight;
+    setOptions([]);
+
+    // save field
+    const step = flow[chatStep - 1];
+    if (step && step.field) userData[step.field] = val;
+
+    if (chatStep === 6 && val.includes('WhatsApp')) {
+      window.open('https://wa.link/rq2ud5','_blank'); return;
+    }
+
+    if (chatStep < flow.length) {
+      const next = flow[chatStep];
+      setTimeout(() => addBotMsg(next.bot, next.options || []), 300);
+      chatStep++;
+    }
+  }
+
+  // NAV scroll
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => { navbar.classList.toggle('scrolled', window.scrollY > 40); });
+
+  // HERO SLIDER
+  const slides = document.querySelectorAll('#heroSlider img');
+  const dotsContainer = document.getElementById('sliderDots');
+  let current = 0;
+  slides.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.addEventListener('click', () => goTo(i));
+    dotsContainer.appendChild(d);
+  });
+  function goTo(n) {
+    slides[current].classList.remove('active');
+    dotsContainer.children[current].classList.remove('active');
+    current = n;
+    slides[current].classList.add('active');
+    dotsContainer.children[current].classList.add('active');
+  }
+  setInterval(() => goTo((current + 1) % slides.length), 3500);
+
+  // SCROLL REVEAL
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  reveals.forEach(r => observer.observe(r));
+</script>
+</body>
+</html>
